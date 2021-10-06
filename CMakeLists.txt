@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.14)
+project(excluded)
+
+add_library(windows_only SHARED EXCLUDE_FROM_ALL windows_only.cpp define.cpp)
+add_library(linux_only SHARED EXCLUDE_FROM_ALL linux_only.cpp define.cpp)
+add_library(define SHARED EXCLUDE_FROM_ALL define.cpp)
+target_compile_definitions(define PRIVATE MAGIC_DEFINE)
+
+if (WIN32)
+    set_target_properties(windows_only PROPERTIES EXCLUDE_FROM_ALL FALSE)
+endif()
+if (UNIX)
+    set_target_properties(linux_only PROPERTIES EXCLUDE_FROM_ALL FALSE)
+endif()
+if (MAGIC_DEFINE)
+    set_target_properties(define PROPERTIES EXCLUDE_FROM_ALL FALSE)
+endif()
